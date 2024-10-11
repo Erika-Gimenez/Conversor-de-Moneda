@@ -32,7 +32,7 @@ public class Presentacion {
 
     }
 
-    public void bievenida(){
+    public void tituloDeBienvenida(){
         String bienvenida = """
                 *****************************************************
                                  CONVERSOR DE MONEDA
@@ -60,55 +60,47 @@ public class Presentacion {
 
     }
 
-    public String mostrarResultadoDeLaConvercion(String montoOrigenStr, String montoDestinoStr, BigDecimal monto, boolean esInversa) {
+    public String mostrarResultadoDeLaConvercion(String montoOrigenStr, String codigoOrigenStr, BigDecimal monto, boolean esInversa) {
 
+        //con la clase LocalDateTime obtenemos la fecha y hora actual y la guardamos en la variable fechaActual
         LocalDateTime fechaActual = LocalDateTime.now();
         String mensaje;
-        String llaveOrigen = "";
-        String llaveDestino = "";
+        //llamamos a nuestro enum y traemos la constante USD como un string tal cual esta inicializada en el enum con ayuda del metod name
+        String llaveDestino = CodigoDeDivisa.USD.name();
 
         try {
+           //la clase DateTimeFormatter y su metodo ofPattern nos permite perzonalizar un formato de fecha y hora
            DateTimeFormatter formatoDeFechaPersonalizada = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+           //utilizamos el metodo .format de la clase string para formater al fecha actual con fortomato de fecha y lo guardamos en la variable fecha formateada
            String fechaFormateada = fechaActual.format(formatoDeFechaPersonalizada);
 
-
-           double valorUsd = 1;
-           double valorDestino = Double.parseDouble(montoDestinoStr);
-
-           for (Map.Entry<String, Double> entry : moneda.rates().entrySet()) {
-
-               if (entry.getValue() == valorDestino) {
-                   llaveOrigen = entry.getKey();
-
-               }
-               if (entry.getValue() == valorUsd) {
-                   llaveDestino = entry.getKey();
-
-               }
-           }
-
+           //utilizamos una operacion ternaria para saber que msj va a mostrar si de conversion o conversion inversa con el monto ingresado por el usuario los codigos iso el resultado de monto y la fecha y hora
            mensaje = esInversa ?
-                   "\nConversion: " + montoOrigenStr + " " + llaveOrigen + " ===> " + monto + " " + llaveDestino + "\nFecha y hora: " + fechaFormateada
-                   : "\nConversion: " + montoOrigenStr + " " + llaveDestino + " ===> " + monto + " " + llaveOrigen + "\nFecha y hora: " + fechaFormateada ;
+                   "\nConversion: " + montoOrigenStr + " " + codigoOrigenStr + " ===> " + monto + " " + llaveDestino + "\nFecha y hora: " + fechaFormateada
+                   : "\nConversion: " + montoOrigenStr + " " + llaveDestino + " ===> " + monto + " " + codigoOrigenStr + "\nFecha y hora: " + fechaFormateada ;
            return mensaje;
 
        }catch (DateTimeException e){
 
-           throw new RuntimeException("Error: al formatear la fecha y la hora.");
+           throw new RuntimeException("Error: al formatear la fecha y la hora " + e.getMessage());
        }
 
     }
 
     public void validacionDeEntrada(String entrada) throws ErrorEnValidacionDeEntradaException {
+
+        //verifica si la entrada contiene espacio en blanco o esta vacia si es asi lanza o tira una exception
         if (entrada.trim().isBlank()) {
             throw new ErrorEnValidacionDeEntradaException("no se ha ingresado ningún valor.");
         }
-        if (!entrada.matches("\\d+")) {
-            throw new ErrorEnValidacionDeEntradaException("ingresa solo números positivos sin puntos, comas o caracteres especiales.");
+
+        //verifica la entrada negando la condicion si ingresa cualquier caracter que no sea numero positivo o si ingresa un numero decimal que en vez de coma utilice el punto tira una exception
+        if (!entrada.matches("\\d+(\\.\\d+)?")) {
+            throw new ErrorEnValidacionDeEntradaException("ingresa solo números positivos. Si deseas ingresar un número decimal, usa '.' en lugar de ','");
         }
     }
 
-    public void manejoDeCasesConversionAndConversionInversa(String monedaOrigenStr, boolean esInversa) {
+    public void manejoDeCasesConversionAndConversionInversa(String codigoMonedaOrigenStr, boolean esInversa) {
 
         BigDecimal monto;
         String resultado;
@@ -119,16 +111,27 @@ public class Presentacion {
             System.out.println("Ingrese el monto que desea convertir");
             montoOrigenStr = leer.nextLine();
             validacionDeEntrada(montoOrigenStr);
-            double rate = moneda.rates().get(monedaOrigenStr); // estoy pidiendo el valor por medio de la llave en este caso ARS y lo guardo en un double
-            montoDestinoStr = String.valueOf(rate); // llamo a rate y luego lo convierto en un String
+            //pido el valor por medio de la clave en este caso "codigo iso"  que se me pasa por parametro  "codigoMonedaOrigenStr" y lo almaceno en una variable primitiva double
+            double rate = moneda.rates().get(codigoMonedaOrigenStr);
+            //convierto la variable rate a string haciendo un casting
+            montoDestinoStr = String.valueOf(rate);
+            //utilizo la varible "conversorDeMoneda" del objeto "ConversorDeMoneda" y utilizo un condicional ternario para saber que metodo asignarle a la variable "monto" del objeto "BigDecimal" calculoConversion o calculoConversionInversa
             monto = esInversa ? conversorDeMoneda.calculoConversionInversa(montoOrigenStr, montoDestinoStr) : conversorDeMoneda.calculoConversion(montoOrigenStr, montoDestinoStr);
-            resultado = mostrarResultadoDeLaConvercion(montoOrigenStr, montoDestinoStr, monto, esInversa);
+            //llamo al metodo mostrarResultadoDeLaConversion que devuelve un mensaje modificado para monstrar el monto el codigo iso mas la fecha y hora de la conversion
+            resultado = mostrarResultadoDeLaConvercion(montoOrigenStr, codigoMonedaOrigenStr, monto, esInversa);
             System.out.println(resultado);
-            Moneda monedaGuardaTasaDeCambio = new Moneda(moneda.base(), Map.of(monedaOrigenStr, rate));
+            //en atributo tenemos un List que anida un Map
+            //creamos una segundo objeto temporal de la clase Moneda para guardar la base y la tasa de cambio  de cada conversion
+            Moneda monedaGuardaTasaDeCambio = new Moneda(moneda.base(), Map.of(codigoMonedaOrigenStr, rate));
+            //luego creamos un map con los objetos  clave moneda y valor String
             Map<Moneda, String> conversion = new HashMap<>();
+            //guardamos el objeto temporal de moneda y el resultado en el map
             conversion.put(monedaGuardaTasaDeCambio, resultado);
+            //guardamos la variable de map en un arrayalist
             historialDeConversion.add(conversion);
+            //creamos un objeto de la clase Serializacion
             Serializacion generador = new Serializacion();
+            //serializamos nuestro arrays con todos los detalles de la base, la tasa de cambio, la conversion y su fecha y hora
             generador.guardarJson(historialDeConversion);
 
 
@@ -167,65 +170,50 @@ public class Presentacion {
     public void logica() {
         String opcionString;
         int opc;
-        bievenida();
+        tituloDeBienvenida();
 
         while (true) {
 
             menu();
             System.out.print("Elige una opción válida: ");
             try {
-                opcionString = leer.nextLine().trim();
+                opcionString = leer.nextLine().trim();// recibimos la opcion ingrsada por el usuario
                 validacionDeEntrada(opcionString);
-                opc = Integer.parseInt(opcionString);
+                opc = Integer.parseInt(opcionString);// casteamos la opcion "la convertimos en un int"
 
+                //manejamos cada opcion del menu usando lambdas
                 switch (opc) {
-                    case 1:
-                        manejoDeCasesConversionAndConversionInversa("ARS", false);
+                    case 1 -> manejoDeCasesConversionAndConversionInversa(CodigoDeDivisa.ARS.name(), false);
 
-                        break;
-                    case 2:
-                        manejoDeCasesConversionAndConversionInversa("ARS", true);
+                    case 2 -> manejoDeCasesConversionAndConversionInversa(CodigoDeDivisa.ARS.name(), true);
 
-                        break;
-                    case 3:
-                        manejoDeCasesConversionAndConversionInversa("BRL", false);
+                    case 3 -> manejoDeCasesConversionAndConversionInversa(CodigoDeDivisa.BRL.name(), false);
 
-                        break;
-                    case 4:
-                        manejoDeCasesConversionAndConversionInversa("BRL", true);
+                    case 4 -> manejoDeCasesConversionAndConversionInversa(CodigoDeDivisa.BRL.name(), true);
 
-                        break;
-                    case 5:
-                        manejoDeCasesConversionAndConversionInversa("COP", false);
+                    case 5 -> manejoDeCasesConversionAndConversionInversa(CodigoDeDivisa.COP.name(), false);
 
-                        break;
-                    case 6:
-                        manejoDeCasesConversionAndConversionInversa("COP", true);
+                    case 6 -> manejoDeCasesConversionAndConversionInversa(CodigoDeDivisa.COP.name(), true);
 
-                        break;
-                    case 7:
-                        manejoDeCasesConversionAndConversionInversa("PEN", false);
+                    case 7 -> manejoDeCasesConversionAndConversionInversa(CodigoDeDivisa.PEN.name(), false);
 
-                        break;
-                    case 8:
-                        manejoDeCasesConversionAndConversionInversa("PEN", true);
+                    case 8 -> manejoDeCasesConversionAndConversionInversa(CodigoDeDivisa.PEN.name(), true);
 
-                        break;
-                    case 9:
-                        mostrarHistorial();
+                    case 9 -> mostrarHistorial();
 
-                        break;
-                    case 10:
+                    case 10 -> {
+                        System.out.println("Ha finalizado el programa, gracias por usar nuestro conversor de monedas");
                         return;
-
-                    default:
-                        System.out.println("El numero ingresado no es valido, intentelo nuevamente");
+                    }
+                    default -> System.out.println("El número ingresado no es válido, inténtelo nuevamente");
                 }
 
             } catch (ErrorEnValidacionDeEntradaException e) {
                 System.out.println("Error: " + e.getMessage());
             } catch (ArithmeticException e) {
                 System.out.println(e.getMessage());
+            } catch (Exception e){
+                System.out.println("Ocurrio un error inesperado " + e.getMessage());
             }
         }
 
