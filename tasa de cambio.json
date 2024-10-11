@@ -1,0 +1,26 @@
+[
+  {
+    "Moneda[base=USD, rates={ARS=974.977325}]": "\nConversion: 100 USD ===> 97497.73 ARS\nFecha y hora: 11/10/2024 18:49:36"
+  },
+  {
+    "Moneda[base=USD, rates={ARS=974.977325}]": "\nConversion: 789 ARS ===> 0.81 USD\nFecha y hora: 11/10/2024 18:50:14"
+  },
+  {
+    "Moneda[base=USD, rates={BRL=5.6121}]": "\nConversion: 1 USD ===> 5.61 BRL\nFecha y hora: 11/10/2024 18:50:23"
+  },
+  {
+    "Moneda[base=USD, rates={BRL=5.6121}]": "\nConversion: 400 BRL ===> 71.27 USD\nFecha y hora: 11/10/2024 18:50:32"
+  },
+  {
+    "Moneda[base=USD, rates={COP=4201.472021}]": "\nConversion: 100 USD ===> 420147.20 COP\nFecha y hora: 11/10/2024 18:51:11"
+  },
+  {
+    "Moneda[base=USD, rates={COP=4201.472021}]": "\nConversion: 867 COP ===> 0.21 USD\nFecha y hora: 11/10/2024 18:51:36"
+  },
+  {
+    "Moneda[base=USD, rates={PEN=3.7695}]": "\nConversion: 100 USD ===> 376.95 PEN\nFecha y hora: 11/10/2024 18:51:58"
+  },
+  {
+    "Moneda[base=USD, rates={PEN=3.7695}]": "\nConversion: 567 PEN ===> 150.42 USD\nFecha y hora: 11/10/2024 18:53:01"
+  }
+]
