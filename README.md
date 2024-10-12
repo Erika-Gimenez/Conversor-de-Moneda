@@ -1,18 +1,19 @@
-# Proyecto de Práctica - Challenge: Conversor de Moneda
+
 
 <p align="center">
    <img src="http://img.shields.io/static/v1?label=STATUS&message=En%20Desarrollo&color=RED&style=for-the-badge" #vitrinedev/>
 </p>
 
-## Descripción
+## Challenge: Conversor de Moneda
 Este conversor de monedas permite realizar conversiones actualizadas en tiempo real
 entre diferentes divisas. Utiliza la API de Open Exchange Rates, en su plan gratuito,
-que proporciona actualizaciones cada hora e incluye hasta 1000 solicitudes al mes.
-Posee menú que está diseñado para ser intuitivo y fácil de usar.
+que proporciona actualizaciones cada hora.
+Posee un menú que está diseñado para ser intuitivo y fácil de usar.
 Además, el proyecto guarda el historial de conversiones en formato JSON,
 lo que permite llevar un control de las conversiones realizadas, incluyendo la
 tasa de cambio, la divisa base, el monto convertido, y la fecha y hora de cada
 transacción.
+
 ## 🔧 Tecnologías Utilizadas
 
 - **Lenguaje de programación**: Java ☕
@@ -31,20 +32,25 @@ transacción.
   https://www.oracle.com/ar/java/technologies/downloads/#java17
   
   ```
-2. Tener acceso a Internet para realizar las solicitudes a la **API Open Exchange Rates**.
+  
+2. Tener acceso a Internet para realizar las solicitudes a la API **Open Exchange Rates**.
 3. Abre tu IDE o editor de codigo favorito.
    * Aunque el proyecto fue desarrollado en **IntelliJ IDEA**, puedes utilizar cualquier IDE o entorno de desarrollo de tu preferencia (como Eclipse, NetBeans, Visual Studio Code, etc.).
    * Si prefieres IntelliJ IDEA, puedes descargarlo aquí.
+   
     ```
     https://www.jetbrains.com/es-es/idea/
     
     ```
+
 4. **Librería Gson**: Necesitas agregar la librería Gson para el manejo de JSON.
 * Puedes descargarla desde aqui:
+
   ```
   https://mvnrepository.com/artifact/com.google.code.gson/gson/2.11.0
   
   ```
+
 * Una vez estes ahi ve a `file` y descarga el archivo `jar (291 KB)`, agrégalo a tu proyecto en el IDE que estés usando.
 
 > [!NOTE]
@@ -74,7 +80,8 @@ transacción.
      estadounidense (USD) como moneda base.
 
 2. **Menú Interactivo e Intuitivo**: 
-   - La aplicación presenta un menú claro y fácil de navegar, que permite al usuario seleccionar entre diferentes pares de divisas para realizar conversiones. Entre las opciones de conversión, se incluyen:
+   - La aplicación presenta un menú claro y fácil de navegar, que permite al usuario seleccionar entre diferentes pares de divisas para realizar conversiones. Entre 
+ las opciones de conversión, se incluyen:
      - Dólar estadounidense (USD) a Peso argentino (ARS) y viceversa.
      - Dólar estadounidense (USD) a Real brasileño (BRL) y viceversa.
      - Dólar estadounidense (USD) a Peso colombiano (COP) y viceversa.
@@ -87,7 +94,8 @@ transacción.
    vacios o el uso de caracteres no numéricos cómo letras.
    
 4. **Historial de Conversiones**: 
-   - Cada vez que se realiza una conversión, los detalles de la operación (como el monto convertido, la tasa de cambio utilizada y la fecha y hora exactas de la transacción) se almacenan en una lista dinamica.
+   - Cada vez que se realiza una conversión, los detalles de la operación (como el monto convertido, la tasa de cambio utilizada y la fecha y hora exactas de la 
+   transacción) se almacenan en una lista dinamica.
    Si el usuario lo desea, puede consultarlo desde el menú del programa. Al visualizar el historial, muestra por consola el monto convertido junto con la fecha y hora de la conversión.
    Esto le permite al usuario llevar un registro de sus conversiones de manera sencilla, facilitando el seguimiento de las operaciones realizadas.
 
@@ -149,6 +157,12 @@ la clase `ConversorDeMoneda` donde se gestina la logica de las conversiones, con
 incluye la validación de las entradas, visualización del menu y el historial de conversión.  
 4. **cliente:** Contiene la clase `TipoDeCambioApi` que maneja la solicitud HTTP a la API y la clase `Serializacion` para guardar la información del historial de conversiones en un archivo JSON.
 5. **excepciones:** Contiene excepciones personalizadas como `ErrorEnPeticionNullException`, `ErrorEnMontoInvalidoException` y por ultimo `ErrorEnValidacionDeEntradaException`.
+
+> [!NOTE]
+>  Podría agregar un nuevo paquete llamado presentacion y nuevas clases para no tener toda la lógica en la clase actual de presentación.
+>  Considerar tener una clase padre o una interfaz en el futuro paquete presentacion para mejorar la organización y reutilización del código.
+>  Introducir más excepciones para validar los parámetros o atributos, mejorando la robustez del programa.
+>  Experimentar con una interfaz gráfica en el futuro para mejorar la experiencia del usuario.
 
 ## 🙌🏽 Contribuciones 
 
