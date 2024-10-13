@@ -1,3 +1,4 @@
+![Banner tasa de cambio  Degradado](https://github.com/user-attachments/assets/f5bdb4b3-bed5-4d8e-b4ba-967e8c2a6ca1)
 
 
 <p align="center">
