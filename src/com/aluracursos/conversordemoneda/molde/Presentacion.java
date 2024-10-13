@@ -87,16 +87,29 @@ public class Presentacion {
 
     }
 
-    public void validacionDeEntrada(String entrada) throws ErrorEnValidacionDeEntradaException {
+    public void validacionDeEntradaEntero(String entrada) throws ErrorEnValidacionDeEntradaException {
 
         //verifica si la entrada contiene espacio en blanco o esta vacia si es asi lanza o tira una exception
         if (entrada.trim().isBlank()) {
             throw new ErrorEnValidacionDeEntradaException("no se ha ingresado ningún valor.");
         }
 
-        //verifica la entrada negando la condicion si ingresa cualquier caracter que no sea numero positivo o si ingresa un numero decimal que en vez de coma utilice el punto tira una exception
+        //verifica la entrada negando la condicion si ingresa cualquier caracter que no sea numero entero les lanza una error
+        if (!entrada.matches("\\d+")) {
+            throw new ErrorEnValidacionDeEntradaException("ingresa solo números enteros positivos.");
+        }
+    }
+
+    public void validacionDeEntradaDecimales(String entrada) throws ErrorEnValidacionDeEntradaException {
+
+        //verifica si la entrada contiene espacio en blanco o esta vacia si es asi lanza o tira una exception
+        if (entrada.trim().isBlank()) {
+            throw new ErrorEnValidacionDeEntradaException("no se ha ingresado ningún valor.");
+        }
+
+        //verifica la entrada negando la condicion si ingresa cualquier caracter que no sea numero positivo o  un numero decimal o coma lanza una exception
         if (!entrada.matches("\\d+(\\.\\d+)?")) {
-            throw new ErrorEnValidacionDeEntradaException("ingresa solo números positivos. Si deseas ingresar un número decimal, usa '.' en lugar de ','");
+            throw new ErrorEnValidacionDeEntradaException("ingresa solo números positivos. Si es un número decimal, utiliza '.' en lugar de ','");
         }
     }
 
@@ -110,7 +123,7 @@ public class Presentacion {
         try {
             System.out.println("Ingrese el monto que desea convertir");
             montoOrigenStr = leer.nextLine();
-            validacionDeEntrada(montoOrigenStr);
+            validacionDeEntradaDecimales(montoOrigenStr);
             //pido el valor por medio de la clave en este caso "codigo iso"  que se me pasa por parametro  "codigoMonedaOrigenStr" y lo almaceno en una variable primitiva double
             double rate = moneda.rates().get(codigoMonedaOrigenStr);
             //convierto la variable rate a string haciendo un casting
@@ -178,7 +191,7 @@ public class Presentacion {
             System.out.print("Elige una opción válida: ");
             try {
                 opcionString = leer.nextLine().trim();// recibimos la opcion ingrsada por el usuario
-                validacionDeEntrada(opcionString);
+                validacionDeEntradaEntero(opcionString);
                 opc = Integer.parseInt(opcionString);// casteamos la opcion "la convertimos en un int"
 
                 //manejamos cada opcion del menu usando lambdas
