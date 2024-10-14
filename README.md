@@ -2,8 +2,10 @@
 
 
 <p align="center">
-   <img src="http://img.shields.io/static/v1?label=STATUS&message=En%20Desarrollo&color=RED&style=for-the-badge" #vitrinedev/>
+   <img src="http://img.shields.io/static/v1?label=STATUS&message=Por%20Mejorar&color=LIGHTBLUE&style=for-the-badge" />
+   <img src="https://img.shields.io/badge/language-Java-007396?style=for-the-badge"/>
 </p>
+
 
 ## Challenge: Conversor de Moneda
 Este conversor de monedas permite realizar conversiones actualizadas en tiempo real
@@ -101,8 +103,12 @@ transacción.
    Esto le permite al usuario llevar un registro de sus conversiones de manera sencilla, facilitando el seguimiento de las operaciones realizadas.
 
 5. **Serialización de Datos**:
-   - La aplicación guarda el historial de conversiones en un archivo JSON, lo que permite almacenar y recuperar fácilmente la información.
+   - La aplicación guarda el historial de conversiones en un archivo JSON llamado ``tasa de cambio.json``, lo que permite almacenar y recuperar fácilmente la información.
    Este proceso asegura que los datos queden organizados y puedan ser utilizados en futuras consultas o revisiones.
+
+* Ejemplo visual del archivo JSON llamado ``tasa de cambio.json``
+
+![foto tasa de cambio json](https://github.com/user-attachments/assets/f141abf6-8dcd-41ac-8eeb-19c78044cabc)
 
 6. **Soporte para Múltiples Divisas**:
    - La aplicación soporta la conversión entre varias divisas, como el Dólar estadounidense (USD), Peso argentino (ARS),
